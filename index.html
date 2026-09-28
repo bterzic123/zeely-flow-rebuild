@@ -1,0 +1,1141 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light">
+<meta http-equiv="Cache-Control" content="no-cache, must-revalidate">
+<title>Growth Audit — Zeely</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..800&display=swap" rel="stylesheet">
+<style>
+:root{
+  color-scheme: only light;
+  /* ---- Zeely, extracted from their live iOS screens ---- */
+  --z-bg:#FFFFFF; --z-card:#FFFFFF; --z-line:#EDEDF0; --z-soft:#F4F4F6;
+  --z-ink:#0B0B0C; --z-txt:#4A4A50; --z-muted:#9A9AA2;
+  --z-btn:#000000; --z-btn-ink:#FFFFFF; --z-off:#F1F1F3; --z-off-ink:#9A9AA2;
+  --z-green:#58D38E; --z-green-dk:#1E9A57; --z-mint:#E9FAF0; --z-mint2:#BFF3D5;
+  --z-red:#E5484D; --z-red-bg:#FDECEC; --z-track:#EFEFF2;
+  --r-ctl:14px; --r-media:18px;
+  /* ---- the report shell, in Zeely's own palette ---- */
+  --bg:#F6F6F7; --bg2:#FFFFFF; --surf:#FFFFFF;
+  --hair:rgba(11,11,12,.09); --hair2:rgba(11,11,12,.16);
+  --ink:#0B0B0C; --ink2:#4A4A50; --ink3:#8C8C94;
+  --accent:#000000; --accent-lift:#16894C;
+  --panel:#FFFFFF; --panel-ink:#111113; --panel-muted:#63636B; --panel-line:#EAEAEE;
+  --accent-ink:#137A43;
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--ink);
+  font-family:'Archivo',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+  font-size:15px;line-height:1.6;-webkit-font-smoothing:antialiased}
+button{font:inherit;color:inherit;background:none;border:none;cursor:pointer}
+input{font:inherit}
+a{color:inherit}
+.wrap{max-width:1080px;margin:0 auto;padding:0 32px}
+@media(max-width:700px){.wrap{padding:0 20px}}
+
+/* ============ top bar ============ */
+.nav{position:sticky;top:0;z-index:70;background:rgba(246,246,247,.86);backdrop-filter:blur(18px) saturate(160%);
+  border-bottom:1px solid var(--hair)}
+.nav-in{max-width:1080px;margin:0 auto;padding:0 32px;height:58px;display:flex;align-items:center;gap:18px}
+@media(max-width:700px){.nav-in{padding:0 20px;gap:12px}}
+.nav-brand{display:flex;align-items:center;gap:9px;font-size:13.5px;font-weight:600;letter-spacing:-.01em}
+.nav-brand .mk{width:26px;height:26px;flex:none;display:grid;place-items:center;color:#000}
+.nav-brand .mk svg{width:24px;height:24px;display:block}
+.nav-brand span{color:var(--ink2);font-weight:500}
+.nav-brand b{color:var(--ink);font-weight:600}
+.nav-links{margin-left:auto;display:flex;gap:2px;align-items:center}
+.nav-links button{padding:7px 14px;border-radius:8px;font-size:13px;font-weight:600;color:var(--ink3);transition:.16s}
+.nav-links button:hover{color:var(--ink)}
+.nav-links button.on{color:var(--ink);background:#fff;box-shadow:0 1px 4px rgba(11,11,12,.08)}
+@media(max-width:640px){.nav-brand span{display:none}}
+
+.view{display:none}
+.view.on{display:block}
+
+/* ============ hero ============ */
+.hero{padding:104px 0 0;text-align:center;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;top:-340px;left:50%;transform:translateX(-50%);
+  width:1100px;height:640px;border-radius:50%;pointer-events:none;
+  background:radial-gradient(closest-side,rgba(88,211,142,.22),transparent 72%)}
+.hero::after{content:'';position:absolute;inset:0;pointer-events:none;z-index:0;
+  background:radial-gradient(40% 50% at 8% 20%,rgba(191,243,213,.45),transparent 70%),
+   radial-gradient(38% 45% at 92% 18%,rgba(229,72,77,.07),transparent 70%)}
+.hero>*{position:relative;z-index:1}
+.eyebrow{font-size:11.5px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--accent-lift);margin-bottom:26px}
+.hero h1{font-size:76px;line-height:.98;font-weight:700;letter-spacing:-.045em;margin:0 0 24px;font-stretch:112%}
+@media(max-width:820px){.hero h1{font-size:50px}.hero{padding-top:70px}}
+.hero .lede{font-size:20px;line-height:1.5;font-weight:400;color:var(--ink2);max-width:600px;margin:0 auto;letter-spacing:-.012em}
+@media(max-width:820px){.hero .lede{font-size:17px}}
+.hero .meta{margin-top:30px;font-size:12.5px;color:var(--ink3);letter-spacing:.02em}
+.hero .meta b{color:var(--ink2);font-weight:600}
+
+.stats{display:flex;justify-content:center;gap:0;margin:70px auto 0;max-width:760px;
+  border-top:1px solid var(--hair);border-bottom:1px solid var(--hair)}
+.stat{flex:1;padding:26px 14px;text-align:center;border-left:1px solid var(--hair)}
+.stat:first-child{border-left:none}
+.stat b{display:block;font-size:26px;font-weight:700;letter-spacing:-.03em;color:var(--ink)}
+.stat span{display:block;font-size:11.5px;color:var(--ink3);margin-top:5px;line-height:1.35}
+@media(max-width:700px){.stat b{font-size:19px}.stat{padding:18px 8px}}
+
+.fb{max-width:760px;margin:0 auto;padding:30px 0 0;display:grid;grid-template-columns:1fr 1fr;gap:26px;text-align:left}
+@media(max-width:700px){.fb{grid-template-columns:1fr;gap:20px;padding-top:24px}}
+.fb-k{grid-column:1/-1;font-size:10.5px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--ink3);text-align:center;margin-bottom:-6px}
+.fb-i{display:flex;gap:12px;align-items:flex-start}
+.fb-i .tick{width:18px;height:18px;flex:none;margin-top:3px;border-radius:50%;background:rgba(88,211,142,.22);
+  display:grid;place-items:center}
+.fb-i .tick svg{width:10px;height:10px;stroke:var(--accent-lift);stroke-width:3;fill:none;
+  stroke-linecap:round;stroke-linejoin:round}
+.fb-i p{font-size:14px;line-height:1.55;color:var(--ink2);margin:0}
+.fb-i p b{color:var(--ink);font-weight:700}
+
+.sec{padding:96px 0}
+.sec-k{font-size:11.5px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--ink3);margin-bottom:18px}
+.sec h2{font-size:38px;line-height:1.14;font-weight:700;letter-spacing:-.035em;margin:0 0 20px;max-width:680px}
+@media(max-width:820px){.sec h2{font-size:29px}.sec{padding:64px 0}}
+.sec p.body{font-size:17px;line-height:1.66;color:var(--ink2);max-width:640px;margin:0 0 18px;letter-spacing:-.008em}
+.sec p.body b{color:var(--ink);font-weight:600}
+.rule{height:1px;background:var(--hair);margin:0}
+
+.notes{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:40px;max-width:820px}
+@media(max-width:760px){.notes{grid-template-columns:1fr}}
+.note{background:var(--surf);border:1px solid var(--hair);box-shadow:0 2px 10px rgba(11,11,12,.04);border-radius:16px;padding:24px 26px}
+.note h4{font-size:15px;font-weight:700;letter-spacing:-.015em;margin:0 0 8px}
+.note p{font-size:14px;line-height:1.6;color:var(--ink2);margin:0}
+
+.ideas{display:flex;flex-direction:column;gap:0;margin-top:14px;border-top:1px solid var(--hair)}
+.idea{display:grid;grid-template-columns:52px 1fr 180px;gap:26px;align-items:start;
+  padding:30px 4px;border-bottom:1px solid var(--hair);text-align:left;width:100%;transition:.18s}
+.idea:hover{background:rgba(255,255,255,.7)}
+@media(max-width:780px){.idea{grid-template-columns:38px 1fr;gap:16px}}
+.idea .no{font-size:13px;font-weight:700;color:var(--ink3);padding-top:4px;letter-spacing:.02em}
+.idea h3{font-size:21px;line-height:1.25;font-weight:700;letter-spacing:-.024em;margin:0 0 7px}
+@media(max-width:820px){.idea h3{font-size:18px}}
+.idea p{font-size:14.5px;line-height:1.6;color:var(--ink2);margin:0;max-width:540px}
+.idea .out{text-align:right;padding-top:3px}
+@media(max-width:780px){.idea .out{grid-column:2;text-align:left;padding-top:12px}}
+.idea .out b{display:block;font-size:19px;font-weight:700;letter-spacing:-.025em;color:var(--accent-lift);white-space:nowrap}
+.idea .out span{display:block;font-size:10.5px;color:var(--ink3);margin-top:3px;letter-spacing:.04em;text-transform:uppercase;font-weight:600}
+.idea .seeit{display:inline-flex;align-items:center;gap:5px;margin-top:11px;font-size:12.5px;
+  font-weight:600;color:var(--accent-lift)}
+.idea .seeit svg{width:12px;height:12px}
+
+.band{background:var(--surf);border:1px solid var(--hair);border-radius:28px;box-shadow:0 2px 10px rgba(11,11,12,.04);padding:40px 44px;margin-top:44px;
+  display:flex;align-items:center;gap:36px;flex-wrap:wrap}
+@media(max-width:700px){.band{padding:28px 24px;gap:22px}}
+.band .lab{font-size:11.5px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--ink3);margin-bottom:10px}
+.band .txt{flex:1;min-width:240px}
+.band .txt p{font-size:15.5px;line-height:1.6;color:var(--ink2);margin:0}
+.band .nums{display:flex;gap:34px}
+.band .nums div b{display:block;font-size:30px;font-weight:700;letter-spacing:-.035em;color:var(--accent-lift)}
+.band .nums div span{display:block;font-size:11px;color:var(--ink3);margin-top:2px;letter-spacing:.04em;
+  text-transform:uppercase;font-weight:600}
+
+.cta-row{display:flex;justify-content:center;margin-top:52px;align-items:center;gap:22px;flex-wrap:wrap}
+.bigbtn{display:inline-flex;align-items:center;gap:9px;background:var(--accent);color:#fff;
+  font-size:15px;font-weight:700;letter-spacing:-.01em;padding:15px 26px;border-radius:30px;transition:.16s}
+.bigbtn:hover{background:#222}
+.bigbtn svg{width:15px;height:15px}
+
+.foot{border-top:1px solid var(--hair);padding:36px 0 70px;font-size:12.5px;line-height:1.6;color:var(--ink3)}
+
+/* ============ prototype stage ============ */
+.stage{display:grid;grid-template-columns:minmax(440px,1fr) minmax(400px,470px);gap:0;
+  align-items:start;min-height:calc(100vh - 58px)}
+@media(max-width:1080px){.stage{grid-template-columns:1fr}}
+.phonecol{padding:34px 24px 46px;display:flex;flex-direction:column;align-items:center;gap:18px}
+.panelcol{border-left:1px solid var(--hair);background:var(--panel);color:var(--panel-ink);
+  min-height:calc(100vh - 58px);position:sticky;top:58px;max-height:calc(100vh - 58px);overflow-y:auto}
+@media(max-width:1080px){.panelcol{position:static;max-height:none;border-left:none;border-top:1px solid var(--hair)}}
+
+.phone{position:relative;width:390px;height:844px;flex:none;background:#000;border:11px solid #000;
+  border-radius:46px;box-shadow:0 0 0 1.5px #D7D7DC,0 34px 70px -22px rgba(11,11,12,.35)}
+.phone-in{position:absolute;inset:0;border-radius:36px;overflow:hidden;background:var(--z-bg);color-scheme:only light}
+.island{position:absolute;top:9px;left:50%;transform:translateX(-50%);width:104px;height:30px;background:#000;
+  border-radius:16px;z-index:60;pointer-events:none}
+.sbar{position:absolute;top:0;left:0;right:0;height:50px;z-index:55;pointer-events:none;display:flex;
+  align-items:center;justify-content:space-between;padding:14px 28px 0 34px;font:600 15px/1 -apple-system,'Archivo',sans-serif;color:#111;transition:color .3s}
+.sbar.light{color:#fff}
+.sbar .glyphs{display:flex;gap:5px;align-items:center}
+.homebar{position:absolute;bottom:7px;left:50%;transform:translateX(-50%);width:134px;height:5px;
+  border-radius:3px;background:#111;z-index:56;pointer-events:none;transition:background .3s}
+.homebar.light{background:rgba(255,255,255,.9)}
+.screenwrap{position:absolute;inset:0;overflow:hidden;background:var(--z-bg)}
+
+/* ============ phone screens — Zeely's system, all prefixed scr-/z- ============ */
+.scr{position:absolute;inset:0;display:flex;flex-direction:column;background:var(--z-bg);color:var(--z-ink);
+  font-family:'Archivo',-apple-system,sans-serif;font-stretch:108%;
+  transform:translateX(100%);transition:transform .36s cubic-bezier(.32,.72,0,1);z-index:10;will-change:transform}
+.scr.is-active{transform:translateX(0);z-index:20}
+.scr.is-past{transform:translateX(-24%)}
+.scr.sheet{transform:translateY(100%)}
+.scr.sheet.is-active{transform:translateY(0);z-index:30}
+.scr.nofx{transition:none}
+.scr-top{flex:none;padding:52px 20px 0;position:relative;z-index:2}
+.scr-body{flex:1;min-height:0;overflow-y:auto;overflow-x:hidden;padding:0 20px;scrollbar-width:none;position:relative;z-index:2}
+.scr-body::-webkit-scrollbar{display:none}
+.scr-body.dock{display:flex;flex-direction:column}
+.scr-body.dock>.z-dockin{margin-top:auto}
+.scr-foot{flex:none;padding:12px 20px 50px;position:relative;z-index:2}
+
+/* header: chevron, centred section title, four-segment progress */
+.z-head{position:relative;height:44px;display:flex;align-items:center;justify-content:center}
+.z-back{position:absolute;left:-6px;top:2px;width:40px;height:40px;display:grid;place-items:center;color:var(--z-ink)}
+.z-back svg{width:22px;height:22px}
+.z-title{font-size:15.5px;font-weight:500;letter-spacing:-.005em;color:var(--z-ink)}
+.z-logo{height:22px;color:var(--z-ink);display:block}
+.z-logo svg{height:22px;width:auto;display:block}
+.z-prog{display:grid;grid-template-columns:repeat(4,1fr);gap:9px;margin-top:14px}
+.z-prog i{display:block;height:4px;border-radius:2px;background:var(--z-track);position:relative;overflow:hidden}
+.z-prog i b{position:absolute;left:0;top:0;bottom:0;background:var(--z-ink);border-radius:2px}
+.z-h{font-size:24px;line-height:1.24;font-weight:700;letter-spacing:-.02em;color:var(--z-ink)}
+.z-sub{font-size:14px;line-height:1.45;color:var(--z-txt);margin-top:10px}
+
+.z-btn{display:block;width:100%;height:60px;border-radius:30px;background:var(--z-btn);color:var(--z-btn-ink);
+  font:500 16.5px/1 'Archivo',sans-serif;font-stretch:108%;letter-spacing:-.005em;transition:opacity .15s}
+.z-btn:active{opacity:.85}
+.z-btn[disabled]{background:var(--z-off);color:var(--z-off-ink);cursor:default}
+.z-btn.ghost{background:transparent;color:var(--z-ink);border:1px solid var(--z-line);margin-top:12px}
+.z-legal{font-size:12px;line-height:1.55;color:var(--z-txt);text-align:center;margin-top:16px}
+.z-legal a{color:#3F63E0;text-decoration:underline}
+.z-laurels{display:block;width:180px;height:auto;margin:0 auto}
+
+/* option rows */
+.z-rows{display:flex;flex-direction:column;gap:9px;margin-top:22px}
+.z-row{display:flex;align-items:center;gap:14px;width:100%;min-height:64px;text-align:left;background:var(--z-card);
+  border:1px solid var(--z-line);border-radius:var(--r-ctl);padding:0 16px;font:500 14.5px/1.3 'Archivo',sans-serif;font-stretch:108%;
+  color:var(--z-ink);transition:border-color .15s,background .15s}
+.z-row span.l{flex:1}
+.z-row.on{border-color:var(--z-ink);box-shadow:inset 0 0 0 .5px var(--z-ink)}
+.z-ck{width:19px;height:19px;flex:none;border-radius:5px;border:1.5px solid #C9C9CF;display:grid;place-items:center;transition:.15s}
+.z-ck svg{width:12px;height:12px;stroke:#fff;stroke-width:3;fill:none;stroke-linecap:round;stroke-linejoin:round;opacity:0}
+.z-row.on .z-ck{background:var(--z-ink);border-color:var(--z-ink)}
+.z-row.on .z-ck svg{opacity:1;stroke:var(--z-bg)}
+.z-row .ic{width:40px;height:40px;border-radius:50%;flex:none;object-fit:cover;display:block;background:var(--z-soft)}
+.z-row.tall{min-height:72px}
+.z-search{display:flex;align-items:center;gap:12px;height:48px;border:1px solid var(--z-line);border-radius:var(--r-ctl);padding:0 18px;margin-top:20px;background:var(--z-card)}
+.z-search svg{width:19px;height:19px;flex:none;color:var(--z-ink)}
+.z-search input{flex:1;border:none;outline:none;background:transparent;font-size:14.5px;color:var(--z-ink);font-stretch:108%}
+.z-search input::placeholder{color:var(--z-muted)}
+
+/* welcome */
+.z-wimg{display:block;width:calc(100% + 40px);margin:0 -20px;height:auto;
+  -webkit-mask-image:linear-gradient(180deg,#000 80%,transparent);mask-image:linear-gradient(180deg,#000 80%,transparent)}
+.z-wh{font-size:26px;line-height:1.22;font-weight:700;letter-spacing:-.02em;text-align:center;margin:6px 18px 0}
+
+/* sales-goal slider — theirs, working */
+.z-val{text-align:center;margin-top:44px}
+.z-val b{display:block;font-size:30px;font-weight:700;letter-spacing:-.02em;line-height:1}
+.z-val span{display:block;font-size:13px;color:var(--z-muted);margin-top:10px}
+.z-slider{position:relative;height:40px;margin-top:34px;touch-action:none;cursor:pointer}
+.z-slider .tr{position:absolute;left:0;right:0;top:17px;height:6px;border-radius:3px;background:var(--z-track)}
+.z-slider .fl{position:absolute;left:0;top:17px;height:6px;border-radius:3px;background:var(--z-ink)}
+.z-slider .kn{position:absolute;top:7px;width:26px;height:26px;margin-left:-13px;border-radius:50%;background:#fff;border:2px solid var(--z-ink);box-shadow:0 2px 6px rgba(0,0,0,.12)}
+.z-ticks{display:flex;justify-content:space-between;margin-top:6px;padding:0 2px}
+.z-ticks span{font-size:13px;color:#BDBDC4;text-align:center;width:36px;position:relative;padding-top:12px}
+.z-ticks span::before{content:'';position:absolute;top:0;left:50%;width:3px;height:3px;margin-left:-1.5px;border-radius:50%;background:#CFCFD5}
+
+/* loader */
+.z-lh{font-size:24px;line-height:1.26;font-weight:700;letter-spacing:-.02em;margin-top:120px}
+.z-lrow{display:flex;justify-content:space-between;gap:10px;margin-top:26px;font-size:13.5px;color:var(--z-ink)}
+.z-lrow span:last-child{color:var(--z-txt);flex:none}
+.z-lbar{height:5px;border-radius:3px;background:var(--z-track);margin-top:10px;overflow:hidden}
+.z-lbar i{display:block;height:100%;width:0;background:var(--z-ink);border-radius:3px;transition:width .3s linear}
+.z-rev{border:1px solid var(--z-line);border-radius:16px;padding:18px 20px;margin-top:60px;min-height:190px;background:var(--z-card)}
+.z-stars{font-size:19px;letter-spacing:2px;color:var(--z-ink);line-height:1}
+.z-rev p{font-size:14px;line-height:1.5;color:var(--z-ink);margin-top:14px}
+.z-who{display:flex;align-items:center;gap:12px;margin-top:16px}
+.z-who img,.z-who .in{width:32px;height:32px;border-radius:50%;flex:none;object-fit:cover}
+.z-who .in{background:var(--z-soft);display:grid;place-items:center;font-size:14px;font-weight:600}
+.z-who b{display:block;font-size:14px;font-weight:600}
+.z-who small{display:block;font-size:12px;color:var(--z-muted)}
+
+/* name + account inputs */
+.z-in{display:flex;align-items:center;gap:12px;height:52px;border:1px solid var(--z-line);border-radius:var(--r-ctl);padding:0 18px;margin-top:22px;background:var(--z-card)}
+.z-in+.z-in{margin-top:10px}
+.z-in svg{width:18px;height:18px;flex:none;color:var(--z-muted)}
+.z-in input{flex:1;border:none;outline:none;background:transparent;font-size:14.5px;color:var(--z-ink);font-stretch:108%}
+.z-in input::placeholder{color:var(--z-muted)}
+.z-paid{display:inline-flex;align-items:center;gap:7px;background:var(--z-mint);color:var(--z-green-dk);border-radius:14px;padding:6px 12px;font-size:12.5px;font-weight:600;margin-bottom:16px}
+.z-paid svg{width:13px;height:13px;stroke:currentColor;stroke-width:3;fill:none}
+
+/* payoff */
+.z-poh{font-size:21px;line-height:1.28;font-weight:700;letter-spacing:-.02em;margin-top:26px}
+.z-pot{border:1px solid var(--z-line);border-radius:16px;padding:18px 20px 16px;margin-top:18px;background:var(--z-card)}
+.z-pot small{display:block;font-size:12px;color:var(--z-txt)}
+.z-pot b{display:block;font-size:18px;font-weight:700;margin-top:4px}
+.z-gbar{position:relative;height:8px;border-radius:4px;margin-top:30px;background:linear-gradient(90deg,#6FA8F5,#BFE6F2 40%,#9FE8BE 70%,#58D38E)}
+.z-gbar .dot{position:absolute;top:50%;width:14px;height:14px;margin:-7px 0 0 -7px;border-radius:50%;background:#2CB866;border:2px solid #fff;box-shadow:0 1px 4px rgba(0,0,0,.2)}
+.z-gbar .tip{position:absolute;bottom:16px;transform:translateX(-50%);background:#000;color:#fff;font-size:11px;border-radius:7px;padding:5px 9px;white-space:nowrap}
+.z-glab{display:flex;justify-content:space-between;font-size:10px;color:var(--z-muted);margin-top:8px}
+.z-pgrid{display:flex;gap:10px;margin-top:20px}
+.z-pgrid dl{flex:1}
+.z-pgrid dt{font-size:12px;color:var(--z-muted)}
+.z-pgrid dd{font-size:14px;color:var(--z-ink);margin:4px 0 14px}
+.z-pgrid img{width:100px;height:127px;object-fit:cover;border-radius:12px;flex:none;align-self:center}
+.z-mintnote{display:flex;gap:12px;align-items:flex-start;background:var(--z-mint);border-radius:14px;padding:14px 16px;font-size:13.5px;line-height:1.45;color:var(--z-ink)}
+.z-mintnote i{color:#2CB866;font-style:normal;font-size:15px;line-height:1.3}
+
+/* paywall — theirs */
+.z-x{width:36px;height:36px;display:grid;place-items:center;color:#9A9AA2;margin-left:-6px}
+.z-x svg{width:20px;height:20px}
+.z-pwh{font-size:24px;line-height:1.2;font-weight:700;letter-spacing:-.02em;margin-top:14px}
+.z-chart{position:relative;height:170px;margin-top:6px}
+.z-chart svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+.z-tt{position:absolute;transform:translate(-50%,-100%);background:#000;color:#fff;font-size:11.5px;font-weight:500;border-radius:8px;padding:6px 9px;white-space:nowrap}
+.z-tt.lt{background:#fff;color:#000;border:1px solid var(--z-line);box-shadow:0 2px 8px rgba(0,0,0,.06)}
+.z-dt{position:absolute;bottom:-2px;transform:translateX(-50%);font-size:11.5px;color:var(--z-muted);white-space:nowrap}
+.z-join{display:flex;align-items:center;justify-content:center;gap:10px;margin-top:22px;font-size:12.5px;line-height:1.35;color:var(--z-ink)}
+.z-join img{height:30px;width:auto;display:block}
+.z-plans{display:flex;flex-direction:column;gap:12px;margin-top:18px}
+.z-plan{display:flex;align-items:center;gap:14px;width:100%;text-align:left;background:var(--z-card);border:1px solid var(--z-line);
+  border-radius:var(--r-ctl);padding:14px 16px;min-height:64px;transition:.15s}
+.z-plan.on{border:1.5px solid var(--z-ink);padding:13.5px 15.5px}
+.z-radio{width:19px;height:19px;flex:none;border-radius:50%;border:1.5px solid #C9C9CF;display:grid;place-items:center}
+.z-plan.on .z-radio{border:5px solid var(--z-ink)}
+.z-plan .m{flex:1;min-width:0}
+.z-plan .t{display:flex;align-items:center;gap:8px;font-size:15.5px;font-weight:600}
+.z-plan .s{display:block;font-size:12.5px;color:var(--z-txt);margin-top:3px}
+.z-plan .r{text-align:right;font-size:13px;color:var(--z-txt);line-height:1.35;flex:none}
+.z-badge{background:var(--z-green);color:#062;font-size:11.5px;font-weight:700;border-radius:9px;padding:3px 8px;white-space:nowrap;color:#04311A}
+.z-trust{display:flex;align-items:center;justify-content:center;gap:7px;font-size:13px;color:var(--z-ink);margin-bottom:12px}
+.z-trust svg{width:17px;height:17px;flex:none}
+.z-links{display:flex;justify-content:space-between;margin-top:14px;padding:0 16px}
+.z-links a{font-size:12px;color:var(--z-muted);text-decoration:none}
+.scr--pay .scr-foot{padding-bottom:30px}
+
+/* offer — comparison, direct purchase */
+.z-oh{font-size:26px;line-height:1.18;font-weight:700;letter-spacing:-.02em;margin-top:12px}
+.z-osub{font-size:14px;line-height:1.45;color:var(--z-txt);margin-top:10px}
+.z-cmp{border:1px solid var(--z-line);border-radius:16px;margin-top:18px;overflow:hidden;background:var(--z-card)}
+.z-cmp .row{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:12px 16px;font-size:13.5px}
+.z-cmp .row+.row{border-top:1px solid var(--z-line)}
+.z-cmp .row.hd{background:var(--z-soft);font-size:11.5px;color:var(--z-muted);text-transform:uppercase;letter-spacing:.06em;padding:10px 16px}
+.z-cmp .row b{font-weight:600}
+.z-cmp .row.win{background:var(--z-mint)}
+.z-cmp .row .v{text-align:right;flex:none}
+.z-cmp .row .v s{color:var(--z-muted)}
+.z-save{display:flex;justify-content:center;margin-top:14px}
+.z-feat{margin-top:16px;display:flex;flex-direction:column;gap:8px}
+.z-feat div{display:flex;gap:10px;align-items:flex-start;font-size:13.5px;line-height:1.4}
+.z-feat svg{width:16px;height:16px;flex:none;margin-top:1px;stroke:var(--z-ink);stroke-width:2.6;fill:none;stroke-linecap:round;stroke-linejoin:round}
+.z-feat b{font-weight:600}
+
+/* dark mode — an approximation: no dark frames were supplied */
+.phone-in.dark{--z-bg:#0E0E10;--z-card:#17171A;--z-line:#2A2A2F;--z-soft:#202024;--z-ink:#F4F4F6;--z-txt:#B2B2BA;--z-muted:#7C7C85;
+  --z-btn:#FFFFFF;--z-btn-ink:#000;--z-off:#1F1F23;--z-off-ink:#5E5E66;--z-mint:#10281B;--z-track:#2A2A2F;background:var(--z-bg)}
+.phone-in.dark .screenwrap{background:var(--z-bg)}
+.phone-in.dark .z-laurels{filter:invert(1)}
+.phone-in.dark .z-row.on .z-ck svg{stroke:#000}
+.phone-in.dark .z-slider .kn{background:#0E0E10}
+.phone-in.dark .z-tt{background:#fff;color:#000}
+.phone-in.dark .z-tt.lt{background:#17171A;color:#F4F4F6;border-color:#2A2A2F}
+.phone-in.dark .z-gbar .tip{background:#fff;color:#000}
+.phone-in.dark .z-wimg{opacity:.92}
+.phone-in.dark .z-legal a{color:#8FA7FF}
+.phone-in.dark .z-paid{color:#7BE3A6}
+
+/* prototype toolbar, walkthrough, QR */
+.tools{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;max-width:520px}
+.seg{display:inline-flex;align-items:center;background:#fff;border:1px solid #E2E2E6;border-radius:20px;padding:3px;gap:2px}
+.seg button{padding:6px 11px;border-radius:16px;font:600 12px/1 'Archivo',sans-serif;color:var(--ink2);transition:.14s}
+.seg button.on{background:var(--ink);color:#fff}
+.demo-btn{display:inline-flex;align-items:center;gap:7px;padding:9px 14px;border-radius:20px;background:var(--accent);color:#fff;
+  font:700 12px/1 'Archivo',sans-serif}
+.demo-cap{width:390px;max-width:calc(100vw - 24px);background:#fff;border:1px solid var(--hair);border-radius:16px;padding:14px 14px 12px;
+  display:flex;align-items:center;gap:12px;position:relative;overflow:hidden;box-shadow:0 4px 18px rgba(11,11,12,.07)}
+.demo-cap .bar{position:absolute;left:0;top:0;right:0;height:3px;background:#EEEEF1}
+.demo-cap .bar i{display:block;height:100%;width:0;background:var(--z-green);transition:width .25s linear}
+.demo-cap p{flex:1;font-size:13.5px;line-height:1.45;color:var(--ink);margin:0;font-weight:500}
+.demo-cap button{font:700 12px/1 'Archivo',sans-serif;color:var(--ink2);padding:7px 10px;border-radius:12px;border:1px solid #E2E2E6;flex:none}
+.finger{position:absolute;z-index:90;width:46px;height:46px;margin:-23px 0 0 -23px;border-radius:50%;background:rgba(11,11,12,.26);
+  border:2px solid rgba(255,255,255,.95);box-shadow:0 4px 14px rgba(0,0,0,.25);pointer-events:none;opacity:0;left:50%;top:60%;
+  transition:left .32s cubic-bezier(.4,0,.2,1),top .32s cubic-bezier(.4,0,.2,1),opacity .2s,transform .15s}
+.finger.show{opacity:1}
+.finger.press{transform:scale(.78);background:rgba(11,11,12,.4)}
+.qr{display:flex;align-items:center;gap:12px;background:#fff;border:1px solid var(--hair);border-radius:16px;padding:10px 16px 10px 10px;text-align:left}
+.qr img{width:123px;height:123px;display:block;image-rendering:pixelated;border-radius:6px}
+.qr span{font-size:12.5px;line-height:1.45;color:var(--ink2)}
+.qr b{display:block;color:var(--ink);font-size:13.5px}
+@media(max-width:1080px){.qr{display:none}}
+
+#view-proto .tools{order:0} #view-proto .demo-cap{order:1} #view-proto .phone{order:2} #view-proto .chips{order:3}
+#view-proto .chiphint{order:4} #view-proto .qr{order:5}
+.cta-row .qr{order:2}
+/* on a phone: the prototype is the screen */
+@media(max-width:500px){
+  #view-proto .phonecol{padding:0 0 28px;gap:14px}
+  #view-proto .phone{width:100vw;height:calc(100svh - 58px);min-height:640px;border:0;border-radius:0;box-shadow:none;order:1}
+  #view-proto .phone-in{border-radius:0}
+  #view-proto .island,#view-proto .sbar,#view-proto .homebar{display:none}
+  #view-proto .scr-top{padding-top:12px}
+  #view-proto .scr-foot{padding-bottom:18px}
+  #view-proto .scr--pay .scr-foot{padding-bottom:14px}
+  #view-proto .z-lh{margin-top:60px}
+  #view-proto .tools{order:3;padding:0 12px}
+  #view-proto .demo-cap{position:fixed;left:12px;right:12px;bottom:12px;width:auto;max-width:none;z-index:95}
+  #view-proto .chips{order:4;padding:0 12px}
+  #view-proto .chiphint{order:5}
+}
+
+/* overview: walkthrough button */
+.herobtns{display:flex;justify-content:center;margin-top:30px}
+.ghostbtn{display:inline-flex;align-items:center;gap:10px;background:#fff;border:1px solid var(--hair2);color:var(--ink);font-size:14px;
+  font-weight:700;padding:9px 20px 9px 9px;border-radius:30px;box-shadow:0 2px 12px rgba(11,11,12,.06);transition:.16s}
+.ghostbtn:hover{box-shadow:0 4px 18px rgba(11,11,12,.1)}
+.ghostbtn .pl{width:30px;height:30px;border-radius:50%;background:var(--accent);display:grid;place-items:center}
+.ghostbtn .pl svg{width:12px;height:12px;fill:#fff;margin-left:2px}
+
+/* chips */
+.chips{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;max-width:470px;margin:0 auto}
+.chip{padding:7px 13px;border-radius:20px;border:1px solid #E2E2E6;background:#fff;
+  font:600 12px/1 'Archivo',sans-serif;color:var(--ink2);transition:.14s}
+.chip:hover{color:var(--ink);border-color:#C9C9CF}
+.chip.offer{border-style:dashed;border-color:var(--accent-lift);color:var(--accent-lift)}
+.chip.on{background:var(--accent);border-color:var(--accent);color:#fff;border-style:solid}
+.chiphint{text-align:center;font-size:11px;color:var(--ink3);margin:0;max-width:430px}
+
+/* ============ the short panel ============ */
+.pn{padding:30px 30px 60px}
+.pn-n{font-size:10.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--accent-ink)}
+.pn-n.ctx{color:var(--panel-muted)}
+.pn-t{font-size:23px;line-height:1.18;font-weight:700;letter-spacing:-.028em;margin:8px 0 0;color:var(--panel-ink)}
+.pn-hyp{font-size:15px;line-height:1.62;color:#2E2E34;margin:16px 0 0}
+.pn-hyp b{font-weight:700;color:var(--panel-ink)}
+.pn-out{margin-top:22px;border-top:1px solid var(--panel-line);padding-top:18px}
+.pn-out .lab{font-size:10px;font-weight:700;letter-spacing:.13em;text-transform:uppercase;color:var(--panel-muted)}
+.pn-out .v{font-size:31px;font-weight:700;letter-spacing:-.035em;color:var(--accent-ink);margin-top:7px;line-height:1}
+.pn-kept{margin-top:22px;font-size:12.5px;line-height:1.55;color:var(--panel-muted)}
+.pn-kept b{color:#2E2E34;font-weight:700}
+.pn-foot{font-size:11.5px;line-height:1.55;color:var(--panel-muted);border-top:1px solid var(--panel-line);
+  padding-top:14px;margin-top:26px}
+.pn-sep{height:1px;background:var(--panel-line);margin:26px 0}
+.hidden{display:none !important}
+</style>
+</head>
+<body>
+
+<div class="nav">
+  <div class="nav-in">
+    <div class="nav-brand">
+      <span class="mk" id="navMark" aria-label="Zeely"></span>
+      <b>Growth Audit</b><span>· Zeely</span>
+    </div>
+    <div class="nav-links">
+      <button class="on" data-view="over">Overview</button>
+      <button data-view="proto">Prototype</button>
+    </div>
+  </div>
+</div>
+
+<!-- ======================= OVERVIEW ======================= -->
+<div class="view on" id="view-over">
+
+<div class="hero">
+  <div class="wrap">
+    <div class="eyebrow">Growth Audit · September 2026</div>
+    <h1>Zeely</h1>
+    <p class="lede">Five ideas to unlock more revenue from the traffic you already have.</p>
+    <div class="meta">Prepared by <b>Adapty</b> · based on your live iOS flow and your App Store listing</div>
+    <div class="herobtns"><button class="ghostbtn" data-demo><span class="pl"><svg viewBox="0 0 24 24"><path d="M7 4.5v15l12-7.5z"/></svg></span>Watch the 30-second walkthrough</button></div>
+    <div class="stats">
+      <div class="stat"><b>30,000+</b><span>apps run subscriptions<br>on Adapty</span></div>
+      <div class="stat"><b>5</b><span>ideas, each rebuilt<br>as a working screen</span></div>
+      <div class="stat"><b>0</b><span>design changes<br>to your art direction</span></div>
+    </div>
+
+    <div class="fb">
+      <div class="fb-k">Built in Adapty Flow Builder</div>
+      <div class="fb-i">
+        <span class="tick"><svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg></span>
+        <p><b>Millions of dollars</b> in subscription revenue pass through Flow Builder every month.</p>
+      </div>
+      <div class="fb-i">
+        <span class="tick"><svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg></span>
+        <p><b>Nearly 500 apps</b> actively build their paywalls and onboarding in it — plenty of them past $100K MRR.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="sec">
+  <div class="wrap">
+    <div class="sec-k">What this is</div>
+    <h2>We opened Zeely the way a new user does, then rebuilt the parts we think are leaving money on the table.</h2>
+    <p class="body">Adapty powers subscriptions for <b>30,000+ apps</b>, so we get to see what actually moves conversion and ARPU across the market rather than inside one app. We pointed that at Zeely: installed it, went through all thirty-odd screens up to the paywall, read your App Store listing and its in-app purchases, and looked for gaps between what you already have and what you currently show people.</p>
+    <p class="body">What follows is five ideas — not fifteen. Each one is a hypothesis you can A/B test, and each one is built into a clickable prototype so you can see it rather than imagine it. <b>The prototype uses your design, not ours.</b></p>
+
+    <div class="notes">
+      <div class="note">
+        <h4>We did not redesign your app</h4>
+        <p>Every screen in the prototype is yours — your black pill buttons, the four-part progress bar, your option rows, the customers slider, the laurels and the goal chart on your paywall. Only the order changed, plus a few things you already have but do not show at the right moment. This is not a design pitch.</p>
+      </div>
+      <div class="note">
+        <h4>You may have tested some of this</h4>
+        <p>We are working from the outside, so we cannot see your experiment history. If one of these is something you have already run, tell us — we will go deeper on the rest rather than repeat it.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="rule"></div>
+
+<div class="sec">
+  <div class="wrap">
+    <div class="sec-k">The five ideas</div>
+    <h2>Ranked by what we would test first.</h2>
+    <p class="body">Each one links straight to the screen in the prototype.</p>
+
+    <div class="ideas">
+      <button class="idea" data-jump="offer">
+        <span class="no">01</span>
+        <span>
+          <h3>Give people a second chance when they close the paywall</h3>
+          <p>Today the X on “Sell without limits” goes straight to “Start creating with Zeely”, with no second offer. Your store already sells a 2-Month Plan at $85.99 that the paywall never shows. Offer it once, on close, next to what eight weeks on the weekly plan cost: $159.92.</p>
+          <span class="seeit">See the screen <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+        </span>
+        <span class="out"><b>ARPU +10–15%</b><span>second chance</span></span>
+      </button>
+
+      <button class="idea" data-jump="name">
+        <span class="no">02</span>
+        <span>
+          <h3>Ask for the password after the purchase</h3>
+          <p>“Create password” sits between “Your plan is ready” and the plan itself, about thirty screens in. Keep the name question, because the plan uses it. The password can wait until someone has paid.</p>
+          <span class="seeit">See the screen <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+        </span>
+        <span class="out"><b>CR +8% · ARPU +17%</b><span>to purchase</span></span>
+      </button>
+
+      <button class="idea" data-jump="paywall">
+        <span class="no">03</span>
+        <span>
+          <h3>Put their goal in the paywall headline</h3>
+          <p>Your paywall chart already plots their goal date, three months out for anyone who picks “In 3–5 months”. The headline above it still says “Sell without limits” to everyone. Name the goal instead: “350 customers a month by Dec 27”.</p>
+          <span class="seeit">See the screen <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+        </span>
+        <span class="out"><b>CR +15–20%</b><span>to purchase</span></span>
+      </button>
+
+      <button class="idea" data-jump="welcome">
+        <span class="no">04</span>
+        <span>
+          <h3>Ask for tracking and notifications after the paywall</h3>
+          <p>A new install opens on “Help us show you what works” and Apple’s tracking dialog, before the welcome screen. A notifications request follows at the ads step. Both can wait until after purchase, so the flow opens on your welcome screen.</p>
+          <span class="seeit">See the screen <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+        </span>
+        <span class="out"><b>CR +10–15%</b><span>to purchase</span></span>
+      </button>
+
+      <button class="idea" data-jump="loader">
+        <span class="no">05</span>
+        <span>
+          <h3>Let the loader read their answers back</h3>
+          <p>“Analyzing your business type” and “Processing your goals” could be anyone’s. While it loads, name their industry, the 350 customers and the 3–5 months they just picked, so the plan feels built for them before it appears.</p>
+          <span class="seeit">See the screen <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+        </span>
+        <span class="out"><b>CR +10–15%</b><span>to purchase</span></span>
+      </button>
+    </div>
+
+    <div class="band">
+      <div class="txt">
+        <div class="lab">Potential outcome</div>
+        <p>Run together, these five move the same funnel at three points — what stands between the install and the price, what the paywall says, and what happens when someone says no.</p>
+      </div>
+      <div class="nums">
+        <div><b>+25%</b><span>CR to purchase</span></div>
+        <div><b>+30%</b><span>ARPU</span></div>
+      </div>
+    </div>
+
+    <div class="cta-row">
+      <div class="qr"><img src="img/qr.svg" alt="QR code for the prototype"><span><b>Or open it on your phone</b>Scan to try the flow in your hand.</span></div>
+      <button class="bigbtn" data-view="proto">Open the prototype
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+      </button>
+    </div>
+  </div>
+</div>
+
+<div class="foot">
+  <div class="wrap">
+    Impact ranges are Adapty's expected effect from teardowns and A/B tests across subscription apps — not measured lift for Zeely. Every price, rating, review and feature line here and in the prototype comes from Zeely's own App Store listing and in-app purchases, website and in-app screens. Prices are the US App Store prices.
+  </div>
+</div>
+</div><!-- /view-over -->
+
+<!-- ======================= PROTOTYPE ======================= -->
+<div class="view" id="view-proto">
+<div class="stage">
+  <div class="phonecol">
+    <div class="tools" id="tools">
+      <div class="seg" id="segTheme"><button data-theme="light" class="on">Light</button><button data-theme="dark">Dark</button></div>
+      <button class="demo-btn" id="demoBtn"><svg viewBox="0 0 24 24" width="11" height="11" fill="currentColor"><path d="M7 4.5v15l12-7.5z"/></svg>30-sec walkthrough</button>
+    </div>
+    <div class="phone">
+      <div class="phone-in" id="phoneIn">
+        <div class="island"></div>
+        <div class="sbar" id="sbar">
+          <span>9:41</span>
+          <span class="glyphs">
+            <svg width="17" height="11" viewBox="0 0 17 11" fill="currentColor"><rect x="0" y="7.5" width="3" height="3.5" rx="1"/><rect x="4.5" y="5.5" width="3" height="5.5" rx="1"/><rect x="9" y="3" width="3" height="8" rx="1"/><rect x="13.5" y="0" width="3" height="11" rx="1"/></svg>
+            <svg width="16" height="11" viewBox="0 0 16 11" fill="currentColor"><path d="M8 10.5 5.6 7.9a3.4 3.4 0 0 1 4.8 0L8 10.5Zm0-5.6a6.4 6.4 0 0 0-4.5 1.9L1.7 4.9a9 9 0 0 1 12.6 0l-1.8 1.9A6.4 6.4 0 0 0 8 4.9Z"/></svg>
+            <svg width="25" height="12" viewBox="0 0 25 12" fill="none"><rect x=".6" y=".6" width="20" height="10.8" rx="3" stroke="currentColor" stroke-opacity=".5"/><rect x="2.2" y="2.2" width="16.5" height="7.6" rx="1.8" fill="currentColor"/><path d="M22.3 4.1v3.8a2 2 0 0 0 0-3.8Z" fill="currentColor" fill-opacity=".5"/></svg>
+          </span>
+        </div>
+        <div class="homebar" id="homebar"></div>
+        <div class="finger" id="finger"></div>
+        <div class="screenwrap">
+
+<!-- WELCOME -->
+<section class="scr" data-id="welcome">
+  <div class="scr-top" style="padding:0"></div>
+  <div class="scr-body dock">
+    <img class="z-wimg" src="img/welcome.png" alt="">
+    <div class="z-dockin">
+      <h2 class="z-wh">Create and launch winning ads with AI</h2>
+      <img class="z-laurels" style="margin-top:22px" src="img/laurels-a.png" alt="4.6 stars · 2,000,000+ businesses">
+    </div>
+  </div>
+  <div class="scr-foot" style="padding-top:26px">
+    <button class="z-btn" data-go="goal">Get started</button>
+    <button class="z-btn ghost">Log in</button>
+    <p class="z-legal">By clicking Continue, you agree to <a>Terms of Service</a>, <a>Privacy policy</a>, <a>Arbitration agreement</a> and <a>Permitted Use Policy</a></p>
+  </div>
+</section>
+
+<!-- GOAL -->
+<section class="scr" data-id="goal">
+  <div class="scr-top">
+    <div class="z-head"><button class="z-back" data-back>BACK</button><span class="z-title">Your profile</span></div>
+    <div class="z-prog" data-p="0.12,0,0,0"></div>
+  </div>
+  <div class="scr-body dock">
+    <div class="z-dockin" style="padding-bottom:6px">
+      <h2 class="z-h">What’s your main goal?</h2>
+      <p class="z-sub">Choose all that apply</p>
+      <div class="z-rows" id="goalList"></div>
+    </div>
+  </div>
+  <div class="scr-foot"><button class="z-btn" id="goalBtn" data-go="industry">Continue</button></div>
+</section>
+
+<!-- INDUSTRY -->
+<section class="scr" data-id="industry">
+  <div class="scr-top">
+    <div class="z-head"><button class="z-back" data-back>BACK</button><span class="z-title">Your profile</span></div>
+    <div class="z-prog" data-p="0.66,0,0,0"></div>
+    <h2 class="z-h" style="margin-top:22px">Choose your industry</h2>
+    <label class="z-search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.6-3.6"/></svg><input id="indSearch" placeholder="Search industries" autocomplete="off"></label>
+  </div>
+  <div class="scr-body"><div class="z-rows" id="indList" style="margin-top:16px;padding-bottom:30px"></div></div>
+</section>
+
+<!-- SALES GOAL -->
+<section class="scr" data-id="salesgoal">
+  <div class="scr-top">
+    <div class="z-head"><button class="z-back" data-back>BACK</button><span class="z-title">Set goals</span></div>
+    <div class="z-prog" data-p="1,1,1,0"></div>
+  </div>
+  <div class="scr-body dock">
+    <div class="z-dockin" style="padding-bottom:26px">
+      <h2 class="z-h">What's your monthly sales goal?</h2>
+      <p class="z-sub">This will help AI build a promotion plan</p>
+      <div class="z-val"><b id="custVal">350</b><span>customers</span></div>
+      <div class="z-slider" id="slider"><div class="tr"></div><div class="fl" id="sFill"></div><div class="kn" id="sKnob"></div></div>
+      <div class="z-ticks"><span>50</span><span>150</span><span>250</span><span>350</span><span>450+</span></div>
+    </div>
+  </div>
+  <div class="scr-foot"><button class="z-btn" data-go="when">Continue</button></div>
+</section>
+
+<!-- TIMELINE -->
+<section class="scr" data-id="when">
+  <div class="scr-top">
+    <div class="z-head"><button class="z-back" data-back>BACK</button><span class="z-title">Set goals</span></div>
+    <div class="z-prog" data-p="1,1,1,0.15"></div>
+  </div>
+  <div class="scr-body dock">
+    <div class="z-dockin" style="padding-bottom:40px">
+      <h2 class="z-h">When do you want to reach your goal?</h2>
+      <div class="z-rows" id="whenList"></div>
+    </div>
+  </div>
+</section>
+
+<!-- LOADER -->
+<section class="scr" data-id="loader">
+  <div class="scr-top"></div>
+  <div class="scr-body">
+    <h2 class="z-lh">We're setting up AI tools and creating a promotion plan for you</h2>
+    <div class="z-lrow"><span id="lLabel">—</span><span id="lPct">0%</span></div>
+    <div class="z-lbar"><i id="lBar"></i></div>
+    <div class="z-rev">
+      <div class="z-stars">★★★★★</div>
+      <p id="rText">—</p>
+      <div class="z-who" id="rWho"></div>
+    </div>
+  </div>
+</section>
+
+<!-- NAME -->
+<section class="scr" data-id="name">
+  <div class="scr-top">
+    <div class="z-head"><span class="z-logo" data-logo></span></div>
+  </div>
+  <div class="scr-body dock">
+    <div class="z-dockin" style="padding-bottom:40px">
+      <h2 class="z-h">Glad to have you with us!<br>What is your name?</h2>
+      <label class="z-in"><input id="nameIn" placeholder="Your name" autocomplete="off" maxlength="24"></label>
+    </div>
+  </div>
+  <div class="scr-foot"><button class="z-btn" id="nameBtn" data-go="payoff">Continue</button></div>
+</section>
+
+<!-- PAYOFF -->
+<section class="scr" data-id="payoff">
+  <div class="scr-top">
+    <div class="z-head"><button class="z-back" data-back>BACK</button><span class="z-logo" data-logo></span></div>
+  </div>
+  <div class="scr-body">
+    <h2 class="z-poh" id="poH"></h2>
+    <div class="z-pot">
+      <small>Organic Growth Potential</small><b>High</b>
+      <div class="z-gbar"><span class="tip" style="left:86%">Your Level</span><span class="dot" style="left:86%"></span></div>
+      <div class="z-glab"><span>Low</span><span>Normal</span><span>Moderate</span><span>High</span></div>
+    </div>
+    <div class="z-pgrid">
+      <dl><dt>Industry</dt><dd id="poInd"></dd><dt>Experience</dt><dd>Just starting out</dd><dt>Goal</dt><dd id="poGoal"></dd></dl>
+      <img src="img/payoff.png" alt="">
+    </div>
+    <div class="z-mintnote"><i>★</i><span>People with similar profiles receive significantly more orders in 2 months.</span></div>
+    <div style="height:14px"></div>
+  </div>
+  <div class="scr-foot"><button class="z-btn" data-go="paywall">Continue</button></div>
+</section>
+
+<!-- PAYWALL -->
+<section class="scr scr--pay" data-id="paywall">
+  <div class="scr-top">
+    <button class="z-x" id="payClose" aria-label="Close"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg></button>
+    <h2 class="z-pwh" id="payH"></h2>
+  </div>
+  <div class="scr-body">
+    <div class="z-chart" id="chart"></div>
+    <div class="z-join"><img src="img/avatars.png" alt=""><span>Join <b>2,000,000+</b> entrepreneurs<br>already using Zeely AI</span></div>
+    <div class="z-plans" id="planList">
+      <button class="z-plan" data-v="trial"><span class="z-radio"></span><span class="m"><span class="t">3-day free trial</span></span><span class="r">then $19.99<br>/ week</span></button>
+      <button class="z-plan" data-v="q3"><span class="z-radio"></span><span class="m"><span class="t">3 months <span class="z-badge">54% OFF</span></span><span class="s">$119.99 / 3 months</span></span><span class="r">$9.23 / week</span></button>
+    </div>
+    <div style="height:10px"></div>
+  </div>
+  <div class="scr-foot">
+    <p class="z-trust"><svg viewBox="0 0 24 24"><path d="M12 2.5 4 5.5v6c0 5 3.4 8.7 8 10 4.6-1.3 8-5 8-10v-6z" fill="#58D38E"/><path d="m8.5 12 2.4 2.4 4.6-4.8" stroke="#fff" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg><span id="payTrust"></span></p>
+    <button class="z-btn" id="payCta">Subscribe</button>
+    <div class="z-links"><a>Privacy Policy</a><a>Terms &amp; Conditions</a><a>Restore</a></div>
+  </div>
+</section>
+
+<!-- OFFER -->
+<section class="scr scr--pay sheet" data-id="offer">
+  <div class="scr-top">
+    <button class="z-x" id="offClose" aria-label="Close"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg></button>
+    <h2 class="z-oh">Not sure about weekly?<br>Take 2 months up front.</h2>
+    <p class="z-osub" id="offSub"></p>
+  </div>
+  <div class="scr-body">
+    <div class="z-cmp">
+      <div class="row hd"><span>Next 8 weeks</span><span>You pay</span></div>
+      <div class="row"><span><b>Weekly plan</b><br>$19.99 × 8 weeks</span><span class="v"><s>$159.92</s></span></div>
+      <div class="row win"><span><b>2-Month Plan</b><br>$10.75 / week</span><span class="v"><b>$85.99</b></span></div>
+    </div>
+    <div class="z-save"><span class="z-badge">You keep $73.93</span></div>
+    <div class="z-feat">
+      <div><svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg><span><b>24/7 social media AI agent</b></span></div>
+      <div><svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg><span><b>AI-generated content that sells</b></span></div>
+      <div><svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg><span><b>Batch organic content creation</b></span></div>
+    </div>
+    <img class="z-laurels" style="margin-top:18px;width:170px" src="img/laurels-a.png" alt="4.6 stars · 2,000,000+ businesses">
+    <div style="height:8px"></div>
+  </div>
+  <div class="scr-foot">
+    <p class="z-trust"><svg viewBox="0 0 24 24"><path d="M12 2.5 4 5.5v6c0 5 3.4 8.7 8 10 4.6-1.3 8-5 8-10v-6z" fill="#58D38E"/><path d="m8.5 12 2.4 2.4 4.6-4.8" stroke="#fff" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg><span>One charge for 2 months. Cancel anytime.</span></p>
+    <button class="z-btn" id="offerCta">Get 2 months — $85.99</button>
+    <div class="z-links"><a>Privacy Policy</a><a>Terms &amp; Conditions</a><a>Restore</a></div>
+  </div>
+</section>
+
+<!-- ACCOUNT (after purchase) -->
+<section class="scr" data-id="account">
+  <div class="scr-top">
+    <div class="z-head"><span class="z-logo" data-logo></span></div>
+  </div>
+  <div class="scr-body dock">
+    <div class="z-dockin" style="padding-bottom:40px">
+      <span class="z-paid"><svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg><span id="paidTxt">Your plan is active</span></span>
+      <h2 class="z-h">Create password</h2>
+      <p class="z-sub" style="color:var(--z-ink)">Just a few more steps and you're done.<br>We hate paperwork too.</p>
+      <label class="z-in"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg><input type="password" id="pw1" placeholder="Create your password"></label>
+      <label class="z-in"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg><input type="password" id="pw2" placeholder="Confirm your password"></label>
+    </div>
+  </div>
+  <div class="scr-foot"><button class="z-btn" id="pwBtn" disabled data-go="welcome">Continue</button></div>
+</section>
+
+        </div>
+      </div>
+    </div>
+    <div class="demo-cap hidden" id="demoCap"><div class="bar"><i id="demoProg"></i></div><p id="demoTxt"></p><button id="demoStop">Stop</button></div>
+    <div class="chips" id="chips"></div>
+    <p class="chiphint">Jump to any screen — answers already filled in.</p>
+    <div class="qr"><img src="img/qr.svg" alt="QR code for this prototype"><span><b>Open it on your phone</b>Scan to try the flow in your hand.</span></div>
+  </div>
+  <div class="panelcol"><div class="pn" id="panel"></div></div>
+</div>
+</div><!-- /view-proto -->
+
+<script>
+/* ================= Zeely's mark and wordmark, from zeely.ai ================= */
+var LOGO = "M19.88 17.15H0.49C0.41 16.89 0.34 16.64 0.27 16.38H20.10C20.04 16.64 19.97 16.89 19.88 17.15Z|M4.83 22.68L4.83 22.69H15.54L15.55 22.68H4.83Z|M3.76 21.92C3.46 21.68 3.18 21.42 2.92 21.15H17.46C17.19 21.42 16.91 21.68 16.62 21.92H3.76Z|M1.12 18.67C1.29 19.00 1.48 19.32 1.69 19.63H18.69C18.89 19.32 19.08 19.00 19.25 18.67H1.12Z|M10.19 24.21C8.82 24.21 7.51 23.94 6.32 23.45H14.05C12.86 23.94 11.55 24.21 10.19 24.21Z|M0.03 14.86C0.01 14.61 0.00 14.35 0.00 14.09H20.38C20.38 14.35 20.36 14.61 20.34 14.86H0.03Z|M0.09 12.56C0.14 12.24 0.20 11.92 0.27 11.61H20.10C20.17 11.92 20.23 12.24 20.28 12.56H0.09Z|M19.88 10.84H0.49L0.49 10.84H19.88L19.88 10.84Z|M19.60 10.08H0.77C0.88 9.82 1.00 9.56 1.12 9.31H19.25C19.38 9.56 19.50 9.82 19.60 10.08Z|M18.28 7.79C18.08 7.52 17.86 7.27 17.64 7.02H2.74C2.51 7.27 2.29 7.52 2.09 7.79H18.28Z|M10.19 3.78C12.28 3.78 14.23 4.41 15.85 5.50H4.53C6.15 4.41 8.09 3.78 10.19 3.78Z|M13.52 4.34C12.47 3.98 11.35 3.78 10.19 3.78C8.09 3.78 6.15 4.41 4.53 5.50H11.19C11.91 5.02 12.69 4.63 13.52 4.34Z|M2.09 7.79C2.52 7.23 3.00 6.72 3.53 6.26H10.19C9.66 6.72 9.18 7.23 8.75 7.79H2.09Z|M1.56 8.55C1.26 9.04 0.99 9.55 0.77 10.08H7.43C7.65 9.55 7.91 9.04 8.22 8.55H1.56Z|M0.09 12.56C0.18 11.97 0.31 11.40 0.49 10.85H7.15C6.97 11.40 6.84 11.97 6.75 12.56H0.09Z|M0.02 13.33C0.00 13.55 0.00 13.77 0 14.00C0 14.28 0.01 14.57 0.03 14.85H6.69C6.66 14.57 6.65 14.28 6.65 14.00C6.65 13.77 6.66 13.55 6.67 13.33H0.02Z|M0.49 17.15C0.33 16.65 0.21 16.14 0.12 15.62H6.78C6.86 16.14 6.99 16.65 7.15 17.15H0.49Z|M0.77 17.91C1.02 18.52 1.33 19.09 1.68 19.63H8.34C7.99 19.09 7.68 18.52 7.43 17.91H0.77Z|M3.75 21.92C3.20 21.46 2.69 20.95 2.24 20.39H8.90C9.35 20.95 9.86 21.46 10.41 21.92H3.75Z|M4.82 22.68C6.38 23.65 8.22 24.21 10.19 24.21C11.35 24.21 12.47 24.01 13.52 23.65C12.80 23.40 12.12 23.08 11.48 22.68H4.82Z|M57.96 14.06C57.93 11.70 57.14 9.76 55.58 8.22C54.01 6.71 52.04 5.96 49.63 5.96C47.22 5.96 45.21 6.71 43.65 8.22C42.05 9.76 41.27 11.67 41.27 14.03C41.27 16.38 42.05 18.30 43.65 19.80C45.21 21.31 47.22 22.06 49.63 22.06C51.54 22.06 53.26 21.53 54.77 20.43C56.27 19.33 57.24 17.95 57.68 16.26H53.58C52.98 17.67 51.45 18.73 49.66 18.73C47.53 18.73 45.84 17.32 45.34 15.28H57.83C57.93 14.94 57.96 14.53 57.96 14.06ZM49.66 9.29C51.63 9.29 53.36 10.45 53.98 12.17H45.50C46.15 10.42 47.75 9.29 49.66 9.29Z|M75.70 14.06C75.67 11.70 74.89 9.76 73.32 8.22C71.76 6.71 69.79 5.96 67.37 5.96C64.96 5.96 62.96 6.71 61.39 8.22C59.80 9.76 59.01 11.67 59.01 14.03C59.01 16.38 59.80 18.30 61.39 19.80C62.96 21.31 64.96 22.06 67.37 22.06C69.28 22.06 71.01 21.53 72.51 20.43C74.01 19.33 74.98 17.950 75.42 16.26H71.32C70.73 17.67 69.19 18.73 67.41 18.73C65.28 18.73 63.59 17.32 63.08 15.28H75.58C75.67 14.94 75.70 14.53 75.70 14.06ZM67.41 9.29C69.38 9.29 71.10 10.45 71.73 12.17H63.24C63.90 10.42 65.50 9.29 67.41 9.29Z|M77.60 21.78H81.67V0H77.60V21.78Z|M91.51 16.04L87.19 6.27H82.84L89.60 20.12L85.62 28H89.88L100 6.27H95.74L91.51 16.04Z|M36.43 6.27H41.08L30.42 21.78H25.77L36.43 6.27Z|M26.19 6.27H37.61V9.77H26.19V6.27Z|M29.33 18.28H40.31V21.78H29.33V18.28Z".split('|');
+function svgOf(paths, vb){ return '<svg viewBox="'+vb+'" fill="currentColor" xmlns="http://www.w3.org/2000/svg">'+paths.map(function(d){ return '<path d="'+d+'"/>'; }).join('')+'</svg>'; }
+document.getElementById('navMark').innerHTML = svgOf(LOGO.slice(0,20),'-1 2.6 22.4 23');
+document.querySelectorAll('[data-logo]').forEach(function(el){ el.innerHTML = svgOf(LOGO,'0 0 100 28'); });
+document.querySelectorAll('.z-back').forEach(function(b){ b.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>'; });
+document.querySelectorAll('.z-prog').forEach(function(p){ p.innerHTML=p.dataset.p.split(',').map(function(v){ return '<i><b style="width:'+(v*100)+'%"></b></i>'; }).join(''); });
+
+/* ================= their options, verbatim ================= */
+var GOALS = [
+  {k:'sales',  l:'Get more sales',        p:'get more sales',        ld:'get more sales'},
+  {k:'ads',    l:'Launch ads that work',  p:'launch ads that work',  ld:'launch ads that work'},
+  {k:'social', l:'Grow on social media',  p:'grow on social media',  ld:'grow on social media'},
+  {k:'content',l:'Create better content', p:'create better content', ld:'create better content'},
+  {k:'brand',  l:'Build brand awareness', p:'build brand awareness', ld:'build brand awareness'}
+];
+var IND = [
+  {k:'clothing',l:'Clothing'},{k:'jewelry',l:'Jewelry'},{k:'beauty',l:'Beauty'},{k:'fitness',l:'Fitness'},{k:'art',l:'Art'},
+  {k:'realestate',l:'Real Estate'},{k:'retail',l:'Retail'},{k:'wellness',l:'Wellness'},{k:'photo',l:'Photography'},{k:'ecom',l:'E-commerce'},
+  {k:'music',l:'Music'},{k:'hair',l:'Hair Salon Services'},{k:'candles',l:'Candles'},{k:'digital',l:'Digital Marketing'}
+];
+var INDK={}; IND.forEach(function(i){ INDK[i.k]=i; });
+var WHEN = [
+  {k:'2-3', l:'In 2-3 months', s:'2-3 months', d:60},
+  {k:'3-5', l:'In 3-5 months', s:'3-5 months', d:90},
+  {k:'5-9', l:'In 5-9 months', s:'5-9 months', d:150},
+  {k:'year',l:'In a year',     s:'a year',     d:365}
+];
+var WHENK={}; WHEN.forEach(function(w){ WHENK[w.k]=w; });
+/* reviews shown on their own loader, verbatim */
+var REVIEWS = [
+  ['Kinda weird, but I felt relief. The static promo for my campaign finally looked like real business, not hobby. Email support handled my screenshot-heavy issue. I’d improve background variants.','Alice Coleman','36, Florida','img/alice.png'],
+  ['Zero design skills but still whip pro-looking pics and vids using simple controls, everything loads fast and keeps content flow steady daily😌','Annnnnnnnnn38','47, New York','']
+];
+
+/* ================= state ================= */
+function defaults(){ return { theme:S0.theme, goals:['sales','ads'], ind:'music', cust:350, when:'3-5', name:'Alex', plan:'trial' }; }
+var S0 = {theme:'light'};
+var S = defaults();
+function goalDate(){ var d=new Date(); d.setDate(d.getDate()+WHENK[S.when].d); return d; }
+function md(d){ return new Intl.DateTimeFormat('en-US',{month:'short',day:'numeric'}).format(d); }
+function custTxt(){ return S.cust>=450 ? '450+' : String(S.cust); }
+function joinL(a){ return a.length<2 ? (a[0]||'') : a.slice(0,-1).join(', ')+' and '+a[a.length-1]; }
+function goalsSel(){ return GOALS.filter(function(g){ return S.goals.indexOf(g.k)>-1; }); }
+
+/* ================= builders ================= */
+var ck='<span class="z-ck"><svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg></span>';
+function buildGoals(){ var g=document.getElementById('goalList'); g.innerHTML='';
+  GOALS.forEach(function(o){ var b=document.createElement('button'); b.className='z-row'; b.dataset.v=o.k;
+    b.innerHTML='<span class="l">'+o.l+'</span>'+ck;
+    b.addEventListener('click',function(){ var i=S.goals.indexOf(o.k); if(i>-1) S.goals.splice(i,1); else S.goals.push(o.k); syncScreen(); });
+    g.appendChild(b); }); }
+function buildInd(){ var g=document.getElementById('indList'); g.innerHTML='';
+  IND.forEach(function(o){ var b=document.createElement('button'); b.className='z-row tall'; b.dataset.v=o.k;
+    b.innerHTML='<img class="ic" src="img/ind-'+o.k+'.png" alt=""><span class="l">'+o.l+'</span>';
+    b.addEventListener('click',function(){ S.ind=o.k; syncScreen(); setTimeout(function(){ if(cur==='industry') go('salesgoal'); },260); });
+    g.appendChild(b); }); }
+document.getElementById('indSearch').addEventListener('input',function(e){ var q=e.target.value.trim().toLowerCase();
+  document.querySelectorAll('#indList .z-row').forEach(function(r){ r.classList.toggle('hidden', q && INDK[r.dataset.v].l.toLowerCase().indexOf(q)<0); }); });
+function buildWhen(){ var g=document.getElementById('whenList'); g.innerHTML='';
+  WHEN.forEach(function(o){ var b=document.createElement('button'); b.className='z-row'; b.dataset.v=o.k;
+    b.innerHTML='<span class="l">'+o.l+'</span>';
+    b.addEventListener('click',function(){ S.when=o.k; syncScreen(); setTimeout(function(){ if(cur==='when') go('loader'); },260); });
+    g.appendChild(b); }); }
+
+/* the customers slider: 50 → 450+, in steps of 50 */
+var slider=document.getElementById('slider');
+function setSlider(){ var f=(S.cust-50)/400; document.getElementById('sFill').style.width=(f*100)+'%'; document.getElementById('sKnob').style.left=(f*100)+'%';
+  document.getElementById('custVal').textContent=custTxt(); }
+function fromX(x){ var r=slider.getBoundingClientRect(); var f=Math.min(1,Math.max(0,(x-r.left)/r.width)); S.cust=50+Math.round(f*8)*50; setSlider(); syncScreen(); }
+slider.addEventListener('pointerdown',function(e){ slider.setPointerCapture(e.pointerId); fromX(e.clientX);
+  function mv(ev){ fromX(ev.clientX); } function up(){ slider.removeEventListener('pointermove',mv); slider.removeEventListener('pointerup',up); }
+  slider.addEventListener('pointermove',mv); slider.addEventListener('pointerup',up); });
+
+/* the paywall chart: today → their goal date */
+function drawChart(){
+  var el=document.getElementById('chart'), W=el.clientWidth||334, H=170;
+  var x0=34, y0=128, x1=W*0.77, y1=40, x2=W-6;
+  var path='M'+x0+' '+y0+' C '+(x0+W*.28)+' '+(y0-4)+', '+(x1-W*.26)+' '+(y1+8)+', '+x1+' '+y1+' S '+(x2-10)+' '+(y1-6)+', '+x2+' '+(y1-8);
+  var grid=''; for(var i=0;i<6;i++){ var gx=x0+i*(x2-x0)/5; grid+='<line x1="'+gx+'" y1="20" x2="'+gx+'" y2="'+(y0+10)+'" stroke="var(--z-line)" stroke-dasharray="2 4"/>'; }
+  el.innerHTML='<svg viewBox="0 0 '+W+' '+H+'"><defs><linearGradient id="zg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#58D38E" stop-opacity=".28"/><stop offset="1" stop-color="#58D38E" stop-opacity="0"/></linearGradient></defs>'
+    + grid + '<path d="'+path+' L '+x2+' '+(y0+10)+' L '+x0+' '+(y0+10)+' Z" fill="url(#zg)"/>'
+    + '<path d="'+path+'" fill="none" stroke="#7FDDA9" stroke-width="2.5" stroke-linecap="round"/>'
+    + '<circle cx="'+x0+'" cy="'+y0+'" r="7" fill="var(--z-bg)" stroke="#58D38E" stroke-width="3"/>'
+    + '<circle cx="'+x1+'" cy="'+y1+'" r="7" fill="#58D38E" stroke="var(--z-bg)" stroke-width="2.5"/></svg>'
+    + '<span class="z-tt lt" style="left:'+x0+'px;top:'+(y0-14)+'px">You are here</span>'
+    + '<span class="z-tt" style="left:'+x1+'px;top:'+(y1-14)+'px">Your goal</span>'
+    + '<span class="z-dt" style="left:'+x0+'px">'+md(new Date())+'</span>'
+    + '<span class="z-dt" style="left:'+x1+'px">'+md(goalDate())+'</span>';
+}
+
+/* ================= everything downstream reads S ================= */
+var LSTEPS=[];
+function syncScreen(){
+  document.querySelectorAll('#goalList .z-row').forEach(function(b){ b.classList.toggle('on', S.goals.indexOf(b.dataset.v)>-1); });
+  document.getElementById('goalBtn').disabled=!S.goals.length;
+  document.querySelectorAll('#indList .z-row').forEach(function(b){ b.classList.toggle('on', b.dataset.v===S.ind); });
+  document.querySelectorAll('#whenList .z-row').forEach(function(b){ b.classList.toggle('on', b.dataset.v===S.when); });
+  setSlider();
+  var ind=INDK[S.ind].l, w=WHENK[S.when], gs=goalsSel(), first=(gs[0]||GOALS[0]);
+  /* loader lines read the answers back */
+  LSTEPS=[ 'Analyzing '+ind.toLowerCase()+' businesses like yours',
+           'Planning for '+custTxt()+' customers a month',
+           'Pacing it over '+w.s,
+           'Setting up AI tools to '+joinL(gs.map(function(g){ return g.ld; })) ];
+  var ni=document.getElementById('nameIn'); if(document.activeElement!==ni) ni.value=S.name;
+  document.getElementById('nameBtn').disabled=!S.name.trim();
+  var nm=S.name.trim()||'Alex';
+  document.getElementById('poH').textContent=nm+', your AI-powered plan can significantly '+first.p;
+  document.getElementById('poInd').textContent=ind;
+  document.getElementById('poGoal').textContent=custTxt()+' clients in '+w.s;
+  /* paywall */
+  document.getElementById('payH').textContent=custTxt()+' customers a month by '+md(goalDate());
+  drawChart();
+  document.querySelectorAll('#planList .z-plan').forEach(function(b){ b.classList.toggle('on', b.dataset.v===S.plan); });
+  document.getElementById('payTrust').textContent = S.plan==='trial' ? 'Start free today. Cancel anytime.' : 'Billed $119.99 today. Cancel anytime.';
+  document.getElementById('offSub').textContent='Your plan for '+custTxt()+' customers a month stays ready. One charge covers the next 8 weeks, with no trial.';
+}
+
+/* ================= router ================= */
+var ORDER=['welcome','goal','industry','salesgoal','when','loader','name','payoff','paywall','offer','account'];
+var LABEL={welcome:'Welcome',goal:'Goal',industry:'Industry',salesgoal:'Sales goal',when:'Timeline',loader:'Loader',name:'Name',payoff:'Your plan',paywall:'Paywall',offer:'Offer on close',account:'Account'};
+var scr={}, hist=[], cur='welcome', loadTimers=[];
+document.querySelectorAll('.scr').forEach(function(s){ scr[s.dataset.id]=s; });
+
+function chrome(){ var dark=S.theme==='dark';
+  document.getElementById('sbar').classList.toggle('light',dark); document.getElementById('homebar').classList.toggle('light',dark); }
+function enter(id){ chrome(); paintChips(); paintPanel(); clearLoad();
+  if(id==='loader') runLoader(); if(id==='paywall'||id==='offer') requestAnimationFrame(drawChart);
+  if(id==='account'){ document.getElementById('paidTxt').textContent = S.plan==='m2' ? 'Your 2-Month Plan is active' : 'Your plan is active'; } }
+function go(id,opts){
+  opts=opts||{}; if(id===cur) return;
+  var from=scr[cur], to=scr[id];
+  if(!opts.back) hist.push(cur);
+  if(from){ from.classList.remove('is-active');
+    if(!to.classList.contains('sheet') && !from.classList.contains('sheet')) from.classList.add('is-past'); }
+  Object.keys(scr).forEach(function(k){ if(k!==id&&k!==cur) scr[k].classList.remove('is-active'); });
+  if(id==='offer') scr.paywall.classList.add('is-active');
+  to.classList.remove('is-past'); to.classList.add('is-active');
+  cur=id; enter(id);
+}
+function back(){
+  if(!hist.length) return;
+  var prev=hist.pop();
+  scr[cur].classList.remove('is-active');
+  scr[prev].classList.remove('is-past'); scr[prev].classList.add('is-active');
+  cur=prev; enter(prev);
+}
+function jump(id){
+  var i=ORDER.indexOf(id);
+  Object.keys(scr).forEach(function(k){ scr[k].classList.add('nofx'); scr[k].classList.remove('is-active','is-past'); });
+  hist=ORDER.slice(0,i<0?0:i).filter(function(k){ return k!=='loader'; });
+  if(id==='offer') scr.paywall.classList.add('is-active');
+  scr[id].classList.add('is-active'); cur=id;
+  requestAnimationFrame(function(){ requestAnimationFrame(function(){
+    Object.keys(scr).forEach(function(k){ scr[k].classList.remove('nofx'); }); }); });
+  syncScreen(); enter(id);
+}
+function paintChips(){
+  var c=document.getElementById('chips');
+  if(!c.children.length){
+    ORDER.forEach(function(id){
+      var b=document.createElement('button'); b.className='chip'+(id==='offer'?' offer':''); b.textContent=LABEL[id];
+      b.dataset.id=id; b.onclick=function(){ stopDemo(); jump(id); }; c.appendChild(b);
+    });
+  }
+  c.querySelectorAll('.chip').forEach(function(b){ b.classList.toggle('on', b.dataset.id===cur); });
+}
+
+function clearLoad(){ loadTimers.forEach(clearTimeout); loadTimers=[]; }
+function showReview(i){ var r=REVIEWS[i];
+  document.getElementById('rText').textContent=r[0];
+  document.getElementById('rWho').innerHTML=(r[3]?'<img src="'+r[3]+'" alt="">':'<span class="in">'+r[1][0]+'</span>')+'<div><b>'+r[1]+'</b><small>'+r[2]+'</small></div>'; }
+function runLoader(){
+  var k=demo.on?0.48:1, total=6000*k, t0=Date.now();
+  showReview(0);
+  function tick(){ if(cur!=='loader') return;
+    var f=Math.min(1,(Date.now()-t0)/total), p=Math.round(f*100);
+    document.getElementById('lPct').textContent=p+'%'; document.getElementById('lBar').style.width=p+'%';
+    document.getElementById('lLabel').textContent=LSTEPS[Math.min(3,Math.floor(f*4))];
+    if(f>=0.5 && !tick.r){ tick.r=1; showReview(1); }
+    if(f<1) loadTimers.push(setTimeout(tick,80)); else loadTimers.push(setTimeout(function(){ if(cur==='loader') go('name'); },350*k));
+  }
+  tick.r=0; tick();
+}
+
+/* ================= wiring ================= */
+document.querySelectorAll('[data-go]').forEach(function(b){ b.addEventListener('click',function(){ if(!b.disabled) go(b.dataset.go); }); });
+document.querySelectorAll('[data-back]').forEach(function(b){ b.addEventListener('click',back); });
+document.querySelectorAll('#planList .z-plan').forEach(function(b){ b.addEventListener('click',function(){ S.plan=b.dataset.v; syncScreen(); }); });
+document.getElementById('payClose').addEventListener('click',function(){ go('offer'); });
+document.getElementById('offClose').addEventListener('click',function(){ go('account'); });
+document.getElementById('payCta').addEventListener('click',function(){ go('account'); });
+document.getElementById('offerCta').addEventListener('click',function(){ S.plan='m2'; go('account'); });
+document.getElementById('nameIn').addEventListener('input',function(e){ S.name=e.target.value; syncScreen(); });
+function pwCheck(){ var a=document.getElementById('pw1').value, b=document.getElementById('pw2').value; document.getElementById('pwBtn').disabled=!(a.length>=6 && a===b); }
+document.getElementById('pw1').addEventListener('input',pwCheck); document.getElementById('pw2').addEventListener('input',pwCheck);
+
+function setSeg(id,attr,val){ document.querySelectorAll('#'+id+' button').forEach(function(b){ b.classList.toggle('on', b.dataset[attr]===val); }); }
+function setTheme(th){ S.theme=th; S0.theme=th; document.getElementById('phoneIn').classList.toggle('dark',th==='dark'); setSeg('segTheme','theme',th); chrome(); drawChart(); }
+document.querySelectorAll('#segTheme button').forEach(function(b){ b.addEventListener('click',function(){ setTheme(b.dataset.theme); }); });
+
+/* ================= the 30-second walkthrough ================= */
+var demo={tok:0,on:false,t0:0,iv:null}, finger=document.getElementById('finger'), phoneIn=document.getElementById('phoneIn');
+function W(ms){ return new Promise(function(r){ setTimeout(r,ms); }); }
+function cap(txt){ document.getElementById('demoTxt').textContent=txt; }
+async function tap(sel,tok){
+  if(demo.tok!==tok) throw 0;
+  var el=document.querySelector(sel); if(!el) return;
+  var r=el.getBoundingClientRect(), p=phoneIn.getBoundingClientRect(), z=p.width/phoneIn.offsetWidth||1;
+  finger.style.left=((r.left-p.left+r.width/2)/z)+'px'; finger.style.top=((r.top-p.top+r.height/2)/z)+'px';
+  finger.classList.add('show'); await W(380); if(demo.tok!==tok) throw 0;
+  finger.classList.add('press'); await W(120); finger.classList.remove('press'); el.click(); await W(160);
+  if(demo.tok!==tok) throw 0;
+}
+async function pause(ms,tok){ await W(ms); if(demo.tok!==tok) throw 0; }
+function startDemo(){
+  stopDemo(); var tok=++demo.tok; demo.on=true; demo.t0=Date.now();
+  var keep={theme:S.theme}; S=defaults(); S.theme=keep.theme;
+  document.getElementById('indSearch').value=''; document.querySelectorAll('#indList .z-row').forEach(function(r){ r.classList.remove('hidden'); });
+  jump('welcome');
+  document.getElementById('demoCap').classList.remove('hidden');
+  demo.iv=setInterval(function(){ document.getElementById('demoProg').style.width=Math.min(100,(Date.now()-demo.t0)/290)+'%'; },200);
+  (async function(){
+    try{
+      cap('A new install opens on your welcome screen — the tracking and notification prompts now wait until after purchase.'); await pause(1900,tok);
+      await tap('[data-id=welcome] [data-go=goal]',tok);
+      cap('Your questions, all kept. First: what they want from Zeely.'); await pause(600,tok);
+      await tap('#goalList [data-v=social]',tok); await pause(350,tok); await tap('#goalBtn',tok);
+      cap('Their industry, from your photo list.'); await pause(550,tok);
+      await tap('#indList [data-v=music]',tok); await pause(450,tok);
+      cap('Their monthly goal, on your slider.'); await pause(500,tok);
+      var sr=slider.getBoundingClientRect(), p=phoneIn.getBoundingClientRect(), z=p.width/phoneIn.offsetWidth||1;
+      finger.style.left=((sr.left-p.left+sr.width*0.75)/z)+'px'; finger.style.top=((sr.top-p.top+sr.height/2)/z)+'px'; finger.classList.add('show');
+      await pause(400,tok); finger.style.left=((sr.left-p.left+sr.width*0.875)/z)+'px'; S.cust=400; syncScreen(); await pause(650,tok);
+      await tap('[data-id=salesgoal] .z-btn',tok);
+      cap('And when they want to get there.'); await pause(500,tok);
+      await tap('#whenList [data-v="3-5"]',tok); await pause(250,tok);
+      cap('The loader reads their answers back: music, 400 customers, 3–5 months.'); await pause(3100,tok);
+      cap('Their name, because the plan uses it. The password moved to after purchase.'); await pause(900,tok);
+      await tap('#nameBtn',tok);
+      cap('Your plan screen, unchanged.'); await pause(1300,tok);
+      await tap('[data-id=payoff] .z-btn',tok);
+      cap('The paywall headline now names their goal and the date on your chart.'); await pause(1800,tok);
+      await tap('#planList [data-v=q3]',tok); await pause(500,tok); await tap('#planList [data-v=trial]',tok); await pause(400,tok);
+      cap('They close it. One second chance: your own 2-Month Plan, $85.99, no trial.'); await tap('#payClose',tok); await pause(2400,tok);
+      cap('That is the flow. Every screen is yours; only the order changed.');
+      finger.classList.remove('show'); await pause(2000,tok); stopDemo();
+    }catch(e){ if(e!==0){ console.error(e); stopDemo(); } }
+  })();
+}
+function stopDemo(){ if(!demo.on) return; demo.tok++; demo.on=false; clearInterval(demo.iv); finger.classList.remove('show','press');
+  document.getElementById('demoCap').classList.add('hidden'); }
+document.getElementById('demoBtn').addEventListener('click',startDemo);
+document.getElementById('demoStop').addEventListener('click',stopDemo);
+phoneIn.addEventListener('pointerdown',function(e){ if(e.isTrusted && demo.on) stopDemo(); });
+</script>
+<script>
+/* ---- the short panel: hypothesis + potential outcome, nothing else ---- */
+var PANEL = {
+welcome:{n:4,t:'Ask for tracking and notifications after the paywall',
+ hyp:'Try opening on this screen, <b>because today the install opens on “Help us show you what works” and Apple’s tracking dialog, and a notifications request follows at the ads step</b>. Both prompts move to right after purchase, where the answer costs you nothing.',
+ kept:'Your welcome screen untouched — the ad collage, “Create and launch winning ads with AI”, the 4.6 and 2,000,000+ laurels, Get started, Log in and the legal line.',
+ out:'CR +10–15%'},
+goal:{ctx:true,t:'What’s your main goal?',
+ kept:'Untouched — all five options in your order, your square checkboxes and “Choose all that apply”. The first goal they pick now names the plan on the payoff and the lines on the loader.'},
+industry:{ctx:true,t:'Choose your industry',
+ kept:'Untouched — the search field, your photo circles and the list. The industry they tap is read back on the loader and the payoff.'},
+salesgoal:{ctx:true,t:'What’s your monthly sales goal?',
+ kept:'Untouched — your customers slider from 50 to 450+, working. Drag it and the loader, the payoff and the paywall headline all change.'},
+when:{ctx:true,t:'When do you want to reach your goal?',
+ kept:'Untouched — your four options. The one they tap sets the goal date on your paywall chart, as it does today.'},
+loader:{n:5,t:'Let the loader read their answers back',
+ hyp:'Try naming their industry, their customer goal and their timeline in the line above the bar, <b>because “Analyzing your business type” and “Processing your goals” could be anyone’s</b>. A loader only pays off when it feels built for the person watching it.',
+ kept:'Your headline, the percentage, the black progress bar and your two reviews, verbatim.',
+ out:'CR +10–15%'},
+name:{n:2,t:'Ask for the password after the purchase',
+ hyp:'Try keeping the name here and moving “Create password” to after the paywall, <b>because today it stands between “Your plan is ready” and the plan itself</b>. The name stays because the next screen greets them with it.',
+ kept:'Your name screen as it ships — the wordmark, “Glad to have you with us!”, the field and the button.',
+ out:'CR +8% · ARPU +17%'},
+payoff:{ctx:true,t:'Your AI-powered plan',
+ kept:'Untouched — your growth-potential bar, the Industry / Experience / Goal list, the photo and the mint note. It now arrives one screen sooner, with no password in between.'},
+paywall:{n:3,t:'Put their goal in the paywall headline',
+ hyp:'Try “'+'350 customers a month by <i>date</i>” as the headline, <b>because your chart already plots their goal date, but “Sell without limits” speaks to nobody in particular</b>. Go back to the slider or the timeline and the headline follows.',
+ kept:'Your X, the goal chart with “You are here” and “Your goal”, “Join 2,000,000+ entrepreneurs”, both plan cards and the green badge, the shield line and Subscribe. The free trial guide before it stays too.',
+ out:'CR +15–20%'},
+offer:{n:1,t:'Give people a second chance when they close the paywall',
+ hyp:'Try this once, from the paywall’s X, <b>because today closing it goes straight into the app, and your store already sells a 2-Month Plan at $85.99 that no paywall shows</b>. It is a real price, set against eight weeks of your weekly plan, with no trial and no timer.',
+ kept:'Built from your own parts — the X, your card and badge styles, the check list from “What you get with Zeely”, the laurels, the shield line and the black button.',
+ out:'ARPU +10–15%'},
+account:{n:2,t:'Ask for the password after the purchase',
+ hyp:'Try asking here, <b>because once someone has paid, an account is how they keep what they bought, not a hurdle before seeing it</b>. The tracking and notification prompts from idea 4 follow this screen.',
+ kept:'Your “Create password” screen as it ships, word for word. Only its place in the flow changed.',
+ out:'CR +8% · ARPU +17%'}
+};
+
+function outBlock(lab,val){
+  return '<div class="pn-out"><div class="lab">'+lab+'</div><div class="v">'+val+'</div></div>';
+}
+function paintPanel(){
+  var d=PANEL[cur]; if(!d) return;
+  var h='';
+  if(d.ctx){
+    h += '<div class="pn-n ctx">Context · no change proposed</div><h3 class="pn-t">'+d.t+'</h3>'
+       + '<div class="pn-kept">'+d.kept+'</div>';
+  } else {
+    h += '<div class="pn-n">Idea '+d.n+' of 5</div><h3 class="pn-t">'+d.t+'</h3>'
+       + '<p class="pn-hyp">'+d.hyp+'</p>'
+       + outBlock('Potential outcome · based on Adapty data', d.out);
+    h += '<div class="pn-kept"><b>Your design, unchanged.</b> '+d.kept+'</div>';
+  }
+  h += '<div class="pn-foot">Ranges are Adapty’s expected effect from tests across 30,000+ subscription apps — not measured lift for Zeely. '
+     + 'Prices, ratings, reviews and feature lines come from your own published material; prices are the US App Store prices.</div>';
+  document.getElementById('panel').innerHTML = h;
+}
+
+/* ---- views, jumps from the overview ---- */
+function showView(v){
+  if(v!=='proto') stopDemo();
+  document.querySelectorAll('.view').forEach(function(x){ x.classList.remove('on'); });
+  document.getElementById('view-'+v).classList.add('on');
+  document.querySelectorAll('.nav-links button[data-view]').forEach(function(b){ b.classList.toggle('on', b.dataset.view===v); });
+  window.scrollTo(0,0);
+  if(v==='proto') requestAnimationFrame(function(){ setSlider(); drawChart(); });
+}
+document.querySelectorAll('[data-view]').forEach(function(b){ b.addEventListener('click',function(){ showView(b.dataset.view); }); });
+document.querySelectorAll('.idea[data-jump]').forEach(function(b){
+  b.addEventListener('click',function(){ showView('proto'); jump(b.dataset.jump); });
+});
+document.querySelectorAll('[data-demo]').forEach(function(b){ b.addEventListener('click',function(){ showView('proto'); startDemo(); }); });
+
+buildGoals(); buildInd(); buildWhen();
+scr.welcome.classList.add('is-active');
+syncScreen(); chrome(); paintChips(); paintPanel();
+if(/[?&]open=proto/.test(location.search)) showView('proto');
+</script>
+</body>
+</html>
